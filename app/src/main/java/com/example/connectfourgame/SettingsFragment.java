@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -51,6 +53,11 @@ public class SettingsFragment extends Fragment {
             editor.apply();
 
             Toast.makeText(getContext(), "Settings saved", Toast.LENGTH_SHORT).show();
+        });
+
+        binding.backButton.setOnClickListener(v -> {
+            // Navigate back to the previous fragment
+            getFragmentManager().popBackStack();
         });
 
         return view;

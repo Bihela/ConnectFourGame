@@ -2,4 +2,9 @@
     <string name="app_name">Connect Four Game</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="grid_size_options">
+        <item>6x5</item>
+        <item>7x6</item>
+        <item>8x7</item>
+    </string-array>
 </resources>

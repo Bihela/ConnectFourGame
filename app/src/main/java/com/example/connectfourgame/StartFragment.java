@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import com.example.connectfourgame.databinding.FragmentStartBinding;
 
 public class StartFragment extends Fragment {
@@ -20,7 +20,7 @@ public class StartFragment extends Fragment {
     private OnManageProfileListener profileCallback;
 
     public interface OnStartGameListener {
-        void onStartGame(boolean isAIEnabled, int numRows, int numCols, String player1Color,
+        void onStartGame(boolean isAIEnabled, String player1Color,
                          String player2Color, String player1Name, String player2Name);
     }
 
@@ -53,18 +53,17 @@ public class StartFragment extends Fragment {
         binding = FragmentStartBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        // Retrieve player names from SharedPreferences
+        // Retrieve player names and settings from SharedPreferences
         SharedPreferences sharedPref = getActivity().getSharedPreferences("ConnectFourPrefs", Context.MODE_PRIVATE);
         String player1Name = sharedPref.getString("Player1Name", "Player 1");
         String player2Name = sharedPref.getString("Player2Name", "Player 2");
         binding.player1NameEditText.setText(player1Name);
         binding.player2NameEditText.setText(player2Name);
 
-        // Load grid size and player colors from SharedPreferences
-        int numRows = sharedPref.getInt("GridSize", 7);  // Default grid size is 7x6
         String player1Color = sharedPref.getString("Player1Color", "#FF0000");  // Default color for Player 1 is red
         String player2Color = sharedPref.getString("Player2Color", "#FFFF00");  // Default color for Player 2 is yellow
 
+        // Handle the start game button click
         binding.startGameButton.setOnClickListener(v -> {
             boolean isAIEnabled = binding.aiSwitch.isChecked();
             String p1Name = binding.player1NameEditText.getText().toString();
@@ -74,15 +73,14 @@ public class StartFragment extends Fragment {
             Log.d(TAG, "AI Enabled: " + isAIEnabled);
             Log.d(TAG, "Player 1 Name: " + p1Name);
             Log.d(TAG, "Player 2 Name: " + p2Name);
-            Log.d(TAG, "Grid Size: " + numRows);
             Log.d(TAG, "Player 1 Color: " + player1Color);
             Log.d(TAG, "Player 2 Color: " + player2Color);
 
             // Start the game with selected settings
-            callback.onStartGame(isAIEnabled, numRows, numRows - 1, player1Color, player2Color, p1Name, p2Name);
+            callback.onStartGame(isAIEnabled, player1Color, player2Color, p1Name, p2Name);
         });
 
-        // Manage profile button functionality
+        // Handle manage profile button click
         binding.manageProfileButton.setOnClickListener(v -> {
             profileCallback.onManageProfile();
         });

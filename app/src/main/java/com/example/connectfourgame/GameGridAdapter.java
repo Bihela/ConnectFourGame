@@ -11,14 +11,18 @@ public class GameGridAdapter extends RecyclerView.Adapter<GameGridAdapter.ViewHo
 
     private Game game;  // Removed final keyword
     private final OnCellClickListener onCellClickListener;
+    private int player1Color;  // Added for dynamic color setting
+    private int player2Color;  // Added for dynamic color setting
 
     public interface OnCellClickListener {
         void onCellClick(int column);
     }
 
-    public GameGridAdapter(Game game, OnCellClickListener onCellClickListener) {
+    public GameGridAdapter(Game game, OnCellClickListener onCellClickListener, int player1Color, int player2Color) {
         this.game = game;
         this.onCellClickListener = onCellClickListener;
+        this.player1Color = player1Color;
+        this.player2Color = player2Color;
     }
 
     @NonNull
@@ -39,11 +43,11 @@ public class GameGridAdapter extends RecyclerView.Adapter<GameGridAdapter.ViewHo
         int col = position % game.getNumCols();
         char cellValue = game.getBoard()[row][col];
 
-        // Update cell appearance based on game state
+        // Update cell appearance based on game state and settings
         if (cellValue == 'X') {
-            holder.binding.cellView.setBackgroundColor(0xFFFF0000); // Red for player 1
+            holder.binding.cellView.setBackgroundColor(player1Color); // Use dynamic color
         } else if (cellValue == 'O') {
-            holder.binding.cellView.setBackgroundColor(0xFFFFFF00); // Yellow for player 2
+            holder.binding.cellView.setBackgroundColor(player2Color); // Use dynamic color
         } else {
             holder.binding.cellView.setBackgroundColor(0xFFFFFFFF); // Empty cell
         }
@@ -54,8 +58,10 @@ public class GameGridAdapter extends RecyclerView.Adapter<GameGridAdapter.ViewHo
         return game.getNumRows() * game.getNumCols();
     }
 
-    public void updateGame(Game newGame) {
+    public void updateGame(Game newGame, int player1Color, int player2Color) {
         this.game = newGame;
+        this.player1Color = player1Color;
+        this.player2Color = player2Color;
         notifyDataSetChanged();
     }
 

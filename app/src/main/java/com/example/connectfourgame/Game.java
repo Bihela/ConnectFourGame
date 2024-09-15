@@ -4,7 +4,7 @@ import android.util.Log;
 import java.util.Random;
 
 public class Game {
-    private static final String TAG = "Game";  // Tag for logging
+    private static final String TAG = "Game";
     private final Player player1;
     private final Player player2;
     private Player currentPlayer;
@@ -13,21 +13,27 @@ public class Game {
     private int numCols;
     private int turnsPlayed;
     private boolean isAIEnabled;
+    private String player1Color;
+    private String player2Color;
 
-    public Game(Player player1, Player player2, int numRows, int numCols) {
+    // Constructor for dynamic game settings with String colors
+    public Game(Player player1, Player player2, int numRows, int numCols, String player1Color, String player2Color) {
         this.player1 = player1;
         this.player2 = player2;
         this.numRows = numRows;
         this.numCols = numCols;
+        this.player1Color = player1Color;
+        this.player2Color = player2Color;
         this.currentPlayer = player1;
         this.board = new char[numRows][numCols];
         this.turnsPlayed = 0;
         this.isAIEnabled = false;  // Default to false
         initializeBoard();
         Log.d(TAG, "Game initialized: Player1=" + player1.getName() + ", Player2=" + player2.getName() +
-                ", numRows=" + numRows + ", numCols=" + numCols);
+                ", numRows=" + numRows + ", numCols=" + numCols + ", player1Color=" + player1Color + ", player2Color=" + player2Color);
     }
 
+    // Constructor for restoring the game state
     public Game(Player player1, Player player2, char[][] board, int currentPlayerTurn, int turnsPlayed) {
         this.player1 = player1;
         this.player2 = player2;
@@ -40,6 +46,7 @@ public class Game {
                 ", currentPlayer=" + currentPlayer.getName() + ", turnsPlayed=" + turnsPlayed);
     }
 
+    // Setter for enabling AI
     public void setAIEnabled(boolean isAIEnabled) {
         this.isAIEnabled = isAIEnabled;
         Log.d(TAG, "AI Enabled: " + isAIEnabled);
@@ -154,13 +161,11 @@ public class Game {
         }
         Log.d(TAG, "Next turn: " + currentPlayer.getName());
 
-        // Trigger AI move if AI is enabled and it's AI's turn
         if (isAIEnabled && currentPlayer == player2) {
             Log.d(TAG, "AI's turn.");
             aiMove();
-            // Ensure to log after AI move
             Log.d(TAG, "AI has made its move.");
-            nextTurn(); // Call nextTurn again to switch to Player 1
+            nextTurn();
         }
     }
 
@@ -184,27 +189,25 @@ public class Game {
         Random random = new Random();
         int col;
         do {
-            col = random.nextInt(numCols);  // Choose a random column
+            col = random.nextInt(numCols);
             Log.d(TAG, "AI attempting move at column " + col);
         } while (!isValidMove(col));
         makeMove(col);
         Log.d(TAG, "AI moved at column " + col);
-        return col;  // Return the column AI chose
+        return col;
     }
 
     private boolean isValidMove(int col) {
-        boolean valid = board[0][col] == '\u0000';  // Check if the top of the column is empty
+        boolean valid = board[0][col] == '\u0000';
         Log.d(TAG, "Move validity check for column " + col + ": " + valid);
         return valid;
     }
 
-    // New methods
     public int getCurrentPlayerIndex() {
         return currentPlayer == player1 ? 1 : 2;
     }
 
     public char[][] getBoardState() {
-        // Deep copy of the board to avoid modification
         char[][] boardCopy = new char[numRows][numCols];
         for (int i = 0; i < numRows; i++) {
             System.arraycopy(board[i], 0, boardCopy[i], 0, numCols);

@@ -6,6 +6,7 @@
     android:gravity="center"
     android:padding="16dp">
 
+    <!-- Player 1 Name -->
     <EditText
         android:id="@+id/player1NameEditText"
         android:layout_width="match_parent"
@@ -13,6 +14,7 @@
         android:hint="Player 1 Name"
         android:text="Player 1" />
 
+    <!-- Player 2 Name -->
     <EditText
         android:id="@+id/player2NameEditText"
         android:layout_width="match_parent"
@@ -20,21 +22,31 @@
         android:hint="Player 2 Name"
         android:text="Player 2" />
 
+    <!-- AI Switch -->
     <Switch
         android:id="@+id/aiSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Play Against AI" />
 
+    <!-- Start Game Button -->
     <Button
         android:id="@+id/startGameButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start Game" />
 
+    <!-- Manage Profile Button -->
     <Button
         android:id="@+id/manageProfileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Manage Profile" />
+
+    <!-- Settings Button -->
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings" />
 </LinearLayout>

@@ -4,7 +4,7 @@ public class Player {
     private final String name;
     private final char marker; // Marker 'X' or 'O'
     private int score;
-    private int wins; // Add wins counter
+    private int wins; // Counter for wins
 
     // Constructor with name and marker
     public Player(String name, char marker) {

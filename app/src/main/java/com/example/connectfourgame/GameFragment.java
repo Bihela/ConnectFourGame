@@ -38,8 +38,8 @@ public class GameFragment extends Fragment {
     private boolean isAIEnabled;
     private int numRows;
     private int numCols;
-    private int player1Color;
-    private int player2Color;
+    private String player1Color;
+    private String player2Color;
     private String player1Name;
     private String player2Name;
 
@@ -51,7 +51,7 @@ public class GameFragment extends Fragment {
     private String currentUserId;
 
     public static GameFragment newInstance(boolean isAIEnabled, int numRows, int numCols,
-                                           int player1Color, int player2Color,
+                                           String player1Color, String player2Color,
                                            String player1Name, String player2Name) {
         Log.d(TAG, "Creating new instance with AI Enabled: " + isAIEnabled +
                 ", Rows: " + numRows + ", Cols: " + numCols +
@@ -62,8 +62,8 @@ public class GameFragment extends Fragment {
         args.putBoolean(ARG_IS_AI_ENABLED, isAIEnabled);
         args.putInt(ARG_NUM_ROWS, numRows);
         args.putInt(ARG_NUM_COLS, numCols);
-        args.putInt(ARG_PLAYER1_COLOR, player1Color);
-        args.putInt(ARG_PLAYER2_COLOR, player2Color);
+        args.putString(ARG_PLAYER1_COLOR, player1Color);
+        args.putString(ARG_PLAYER2_COLOR, player2Color);
         args.putString(ARG_PLAYER1_NAME, player1Name);
         args.putString(ARG_PLAYER2_NAME, player2Name);
         fragment.setArguments(args);
@@ -75,19 +75,20 @@ public class GameFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView called");
 
+        // Fetch settings from arguments
         if (getArguments() != null) {
             isAIEnabled = getArguments().getBoolean(ARG_IS_AI_ENABLED);
             numRows = getArguments().getInt(ARG_NUM_ROWS);
             numCols = getArguments().getInt(ARG_NUM_COLS);
-            player1Color = getArguments().getInt(ARG_PLAYER1_COLOR);
-            player2Color = getArguments().getInt(ARG_PLAYER2_COLOR);
+            player1Color = getArguments().getString(ARG_PLAYER1_COLOR);
+            player2Color = getArguments().getString(ARG_PLAYER2_COLOR);
             player1Name = getArguments().getString(ARG_PLAYER1_NAME);
             player2Name = getArguments().getString(ARG_PLAYER2_NAME);
-            Log.d(TAG, "Arguments received: isAIEnabled=" + isAIEnabled +
-                    ", numRows=" + numRows + ", numCols=" + numCols +
-                    ", player1Color=" + player1Color + ", player2Color=" + player2Color +
-                    ", player1Name=" + player1Name + ", player2Name=" + player2Name);
         }
+
+        Log.d(TAG, "Settings updated: Rows=" + numRows + ", Cols=" + numCols +
+                ", Player 1: " + player1Name + ", Player 2: " + player2Name +
+                ", Player 1 Color: " + player1Color + ", Player 2 Color: " + player2Color);
 
         View view = inflater.inflate(R.layout.fragment_game, container, false);
         gameBoard = view.findViewById(R.id.game_board);
@@ -107,9 +108,9 @@ public class GameFragment extends Fragment {
             game = new Game(new Player(player1Name, 'X'), new Player(player2Name, 'O'), savedBoard, savedCurrentPlayer, savedTurnsPlayed);
             Log.d(TAG, "Game restored from savedInstanceState");
         } else {
-            game = new Game(new Player(player1Name, 'X'), new Player(player2Name, 'O'), numRows, numCols);
+            game = new Game(new Player(player1Name, 'X'), new Player(player2Name, 'O'), numRows, numCols, player1Color, player2Color);
             game.setAIEnabled(isAIEnabled);
-            Log.d(TAG, "New game created: AI Enabled: " + isAIEnabled);
+            Log.d(TAG, "New game created with updated settings: AI Enabled: " + isAIEnabled);
         }
 
         setupGameBoard();
@@ -136,6 +137,7 @@ public class GameFragment extends Fragment {
 
     private void setupGameBoard() {
         Log.d(TAG, "Setting up game board");
+
         adapter = new GameGridAdapter(game, column -> {
             if (game.makeMove(column)) {
                 Log.d(TAG, "Move made in column: " + column);
@@ -149,11 +151,11 @@ public class GameFragment extends Fragment {
                     updateUI();
                 }
             }
-        });
+        }, numRows, numCols); // Pass numRows and numCols
 
-        gameBoard.setLayoutManager(new GridLayoutManager(getContext(), game.getNumCols()));
+        gameBoard.setLayoutManager(new GridLayoutManager(getContext(), numCols));
         gameBoard.setAdapter(adapter);
-        Log.d(TAG, "Game board set up with " + game.getNumCols() + " columns");
+        Log.d(TAG, "Game board set up with " + numCols + " columns");
     }
 
     private void updateUI() {
@@ -207,32 +209,29 @@ public class GameFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (game != null) {
-            outState.putSerializable(BOARD_STATE_KEY, game.getBoardState());
-            outState.putInt(CURRENT_PLAYER_KEY, game.getCurrentPlayerIndex());
-            outState.putInt(TURNS_PLAYED_KEY, game.getTurnsPlayed());
-            Log.d(TAG, "Game state saved");
-        }
+        Log.d(TAG, "Saving instance state");
+
+        // Save game state
+        outState.putSerializable(BOARD_STATE_KEY, game.getBoardState());
+        outState.putInt(CURRENT_PLAYER_KEY, game.getCurrentPlayerIndex());
+        outState.putInt(TURNS_PLAYED_KEY, game.getTurnsPlayed());
     }
 
     public void changeUser(String newUserId) {
         Log.d(TAG, "Changing user to: " + newUserId);
-        // Clear the existing statistics for the old user ID
+        // Clear existing statistics for the previous user
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_TOTAL_GAMES + currentUserId);
         editor.remove(KEY_WINS + currentUserId);
         editor.remove(KEY_LOSSES + currentUserId);
         editor.apply();
 
-        // Update the current user ID
-        this.currentUserId = newUserId;
+        // Update current user ID
+        currentUserId = newUserId;
 
-        // Reset game state for the new user
-        if (game != null) {
-            game.resetGame();
-        }
-        updateUI();
+        // Load statistics for the new user (if needed)
+        Log.d(TAG, "User changed. Current User ID: " + currentUserId);
 
-        Log.d(TAG, "User ID changed to: " + newUserId);
+        // You might want to update UI or reset the game here if needed
     }
 }
