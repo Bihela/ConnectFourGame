@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    android:layout_margin="2dp"
+    android:background="@android:color/darker_gray">
+
+    <View
+        android:id="@+id/cellView"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/white" />
+
+</FrameLayout>

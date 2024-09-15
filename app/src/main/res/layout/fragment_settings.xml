@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <!-- Grid Size Label -->
+    <TextView
+        android:id="@+id/gridSizeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Grid Size:"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Spinner for Grid Size -->
+    <Spinner
+        android:id="@+id/gridSizeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Player 1 Color Label -->
+    <TextView
+        android:id="@+id/player1ColorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Player 1 Color:"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- EditText for Player 1 Color -->
+    <EditText
+        android:id="@+id/player1ColorEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="#FF0000"
+        android:inputType="text"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Player 2 Color Label -->
+    <TextView
+        android:id="@+id/player2ColorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Player 2 Color:"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <!-- EditText for Player 2 Color -->
+    <EditText
+        android:id="@+id/player2ColorEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="#FFFF00"
+        android:inputType="text"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Save Button -->
+    <Button
+        android:id="@+id/saveSettingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Settings"
+        android:layout_marginTop="16dp" />
+
+</LinearLayout>

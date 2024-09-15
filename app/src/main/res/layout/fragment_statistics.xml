@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/total_games_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Games:"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/wins_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wins:"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/losses_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Losses:"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/win_percentage_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Win Percentage:"
+        android:textSize="18sp"/>
+
+    <!-- Back Button -->
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>
